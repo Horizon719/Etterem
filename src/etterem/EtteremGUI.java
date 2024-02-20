@@ -1,11 +1,20 @@
 package etterem;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 
 public class EtteremGUI extends javax.swing.JFrame {
 
+    private final Path etelekFile = Path.of("etel.txt");
+    private final Path rendelesFile = Path.of("rendeles.txt");
+    
     public EtteremGUI() {
         initComponents();
     }
@@ -93,7 +102,7 @@ public class EtteremGUI extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 90, Short.MAX_VALUE))))
+                        .addGap(0, 16, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,6 +149,11 @@ public class EtteremGUI extends javax.swing.JFrame {
         jScrollPane5.setViewportView(jListEtlap);
 
         btnEtelHozzaad.setText("Étel hozzáadása");
+        btnEtelHozzaad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEtelHozzaadActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -149,26 +163,21 @@ public class EtteremGUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txfEtelNeve, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addComponent(jScrollPane5)
+                        .addGap(93, 93, 93))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txfEtelNeve, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(spnrEtelAra))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(43, 43, 43)
-                                .addComponent(btnMegrendel))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnEtelHozzaad, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane5)
-                        .addGap(93, 93, 93)))
-                .addContainerGap())
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spnrEtelAra, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btnMegrendel)
+                            .addComponent(btnEtelHozzaad, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,12 +222,12 @@ public class EtteremGUI extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(rdbPiros)
+                .addComponent(rdbPiros, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rdbKek)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(rdbZold)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(rdbFeher)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -234,8 +243,18 @@ public class EtteremGUI extends javax.swing.JFrame {
         );
 
         btnRendelesMent.setText("Rendelés mentése");
+        btnRendelesMent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRendelesMentActionPerformed(evt);
+            }
+        });
 
         btnEtelekMent.setText("Ételek mentése");
+        btnEtelekMent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEtelekMentActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -243,14 +262,14 @@ public class EtteremGUI extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnEtelekMent)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRendelesMent))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -277,34 +296,101 @@ public class EtteremGUI extends javax.swing.JFrame {
 
     private void btnMegrendelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMegrendelActionPerformed
         DefaultListModel dflm = new DefaultListModel();
+        String[] etelPluszAr = jListEtlap.getSelectedValue().split("\\|");
+        String elem = etelPluszAr[0];
         if(rdbPiros.isSelected()){
-            meglevoListahozAd(jListPiros.getModel(), dflm);
+            meglevoListahozAd(jListPiros.getModel(), dflm, elem);
             jListPiros.setModel(dflm);
         }else if(rdbKek.isSelected()){
-            meglevoListahozAd(jListKek.getModel(), dflm);
+            meglevoListahozAd(jListKek.getModel(), dflm, elem);
             jListKek.setModel(dflm);
         }else if(rdbZold.isSelected()){
-            meglevoListahozAd(jListZold.getModel(), dflm);
+            meglevoListahozAd(jListZold.getModel(), dflm, elem);
             jListZold.setModel(dflm);
         }else if(rdbFeher.isSelected()){
-            meglevoListahozAd(jListFeher.getModel(), dflm);
+            meglevoListahozAd(jListFeher.getModel(), dflm, elem);
             jListFeher.setModel(dflm);
         }else{
             JOptionPane.showMessageDialog(null, "Nem választott asztalt!");
         }
     }//GEN-LAST:event_btnMegrendelActionPerformed
 
+    private void btnEtelHozzaadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEtelHozzaadActionPerformed
+        if (!"".equals(txfEtelNeve.getText()) && txfEtelNeve != null) {
+            DefaultListModel dflm = new DefaultListModel();
+            ListModel lm = jListEtlap.getModel();
+            String elem = txfEtelNeve.getText() + "|" + spnrEtelAra.getValue().toString();
+            meglevoListahozAd(lm, dflm, elem);
+            jListEtlap.setModel(dflm);
+        } else {
+            JOptionPane.showMessageDialog(null, "Az étel neve nem lehet üres!");
+        }
+    }//GEN-LAST:event_btnEtelHozzaadActionPerformed
+
+    private void btnEtelekMentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEtelekMentActionPerformed
+        deleteAndCreateFile(etelekFile);
+        ListModel lm = jListEtlap.getModel();
+        String txt = "";
+        for (int i = 0; i < lm.getSize(); i++) {
+            txt += lm.getElementAt(i) + "\n";
+        }
+        byte[] bytes = txt.getBytes();
+        writeFile(etelekFile, bytes);
+    }//GEN-LAST:event_btnEtelekMentActionPerformed
+
+    private void btnRendelesMentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRendelesMentActionPerformed
+        deleteAndCreateFile(rendelesFile);
+        String txt = "";
+        
+//        DefaultListModel dflm = new DefaultListModel();
+//        
+//        listatMasol(jListPiros.getModel(), dflm);
+//        listatMasol(jListKek.getModel(), dflm);
+//        listatMasol(jListZold.getModel(), dflm);
+//        listatMasol(jListFeher.getModel(), dflm);
+        
+        byte[] bytes = txt.getBytes();
+        writeFile(rendelesFile, bytes);
+    }//GEN-LAST:event_btnRendelesMentActionPerformed
+
     
-    private void meglevoListahozAd(ListModel lm, DefaultListModel dflm) {
-        String elem = jListEtlap.getSelectedValue();
+    private void meglevoListahozAd(ListModel lm, DefaultListModel dflm, String elem) {
+        listatMasol(lm, dflm);
+        if (dflm.contains(elem)) {
+            JOptionPane.showMessageDialog(null, "Nem lehet egy étel kétszer!");
+        }else{
+            dflm.addElement(elem);
+        }
+    }
+    
+    
+    private void listatMasol(ListModel lm, DefaultListModel dflm) {
         for (int i = 0; i < lm.getSize(); i++) {
             dflm.add(i, lm.getElementAt(i));
         }
-        if (dflm.contains(elem)) {
-                JOptionPane.showMessageDialog(null, "nem lehet egy étel kétszer egy asztalon");
-            }else{
-                dflm.addElement(elem);
+    }
+    
+    private void writeFile(Path path, byte[] bytes) {
+        try {
+            Files.write(path, bytes, StandardOpenOption.APPEND);
+        } catch (IOException ex) {
+            Logger.getLogger(EtteremGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void deleteAndCreateFile(Path path) {
+        if(Files.exists(path)){
+            try {
+                Files.delete(path);
+            } catch (IOException ex) {
+                Logger.getLogger(EtteremGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+        try {
+            Files.createFile(path);
+        } catch (IOException ex) {
+            Logger.getLogger(EtteremGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public static void main(String args[]) {
