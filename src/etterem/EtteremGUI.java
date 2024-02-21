@@ -341,13 +341,24 @@ public class EtteremGUI extends javax.swing.JFrame {
     private void btnRendelesMentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRendelesMentActionPerformed
         deleteAndCreateFile(rendelesFile);
         String txt = "";
+        DefaultListModel dflm = new DefaultListModel(); 
         
-//        DefaultListModel dflm = new DefaultListModel();
-//        
-//        listatMasol(jListPiros.getModel(), dflm);
-//        listatMasol(jListKek.getModel(), dflm);
-//        listatMasol(jListZold.getModel(), dflm);
-//        listatMasol(jListFeher.getModel(), dflm);
+        dflm.add(0, "Piros"); 
+        listatMasol(jListPiros.getModel(), dflm); 
+        dflm.add(dflm.getSize(), ""); 
+        dflm.add(dflm.getSize(), "Kék"); 
+        listatMasol(jListKek.getModel(), dflm);
+        dflm.add(dflm.getSize(), ""); 
+        dflm.add(dflm.getSize(), "Zöld"); 
+        listatMasol(jListZold.getModel(), dflm); 
+        dflm.add(dflm.getSize(), ""); 
+        dflm.add(dflm.getSize(), "Fehér"); 
+        listatMasol(jListFeher.getModel(), dflm);
+        dflm.add(dflm.getSize(), "");
+        
+        for (int i = 0; i < dflm.getSize(); i++) {
+            txt += dflm.getElementAt(i) + "\n";
+        }
         
         byte[] bytes = txt.getBytes();
         writeFile(rendelesFile, bytes);
